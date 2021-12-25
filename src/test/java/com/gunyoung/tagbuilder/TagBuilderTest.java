@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TagBuilderTest {
 
@@ -66,24 +67,6 @@ public class TagBuilderTest {
     }
 
     @Test
-    @DisplayName("Xml 반환 -> 루트와 그 형제")
-    void toXml_test_rootAndSibling() {
-        //Given
-        TagBuilder tagBuilder = new TagBuilder("root");
-        tagBuilder.addSibling("brother");
-
-        String expected =
-                "<root></root>" +
-                "<brother></brother>";
-
-        //When
-        String result = tagBuilder.toXml();
-
-        //Then
-        assertEquals(expected, result);
-    }
-
-    @Test
     @DisplayName("Xml 반환 -> 루트 - 1 자식 - 1자식 - 1자식 - 1자식")
     void toXml_test_rootAndFourLevelDown() {
         //Given
@@ -110,5 +93,39 @@ public class TagBuilderTest {
 
         //Then
         assertEquals(expected, result);
+    }
+
+    @Test
+    @DisplayName("Xml 반환 -> 루트 - 2자식 - 1자식, 리프 노드 추가 후 논 리프에 추가 by addToParent")
+    void toXml_test_for_addToParent() {
+        //Given
+        TagBuilder tagBuilder = new TagBuilder("root");
+        tagBuilder.addChild("first");
+        tagBuilder.addChild("second");
+        tagBuilder.addToParent("root", "one");
+
+        String expected =
+                "<root>" +
+                    "<first>" +
+                        "<second></second>" +
+                    "</first>" +
+                    "<one>" +
+                    "</one>" +
+                "</root>";
+        //When
+        String result = tagBuilder.toXml();
+
+        //Then
+        assertEquals(expected, result);
+    }
+
+    @Test
+    @DisplayName("특정 노드에 자식 노드 추가 -> 해당 노드가 존재하지 않음")
+    void addToParent_test_nonExistParent() {
+        //Given
+        TagBuilder tagBuilder = new TagBuilder("root");
+
+        //When, Then
+        assertThrows(NodeNotFoundedException.class, () -> tagBuilder.addToParent("nonExist", "child"));
     }
 }

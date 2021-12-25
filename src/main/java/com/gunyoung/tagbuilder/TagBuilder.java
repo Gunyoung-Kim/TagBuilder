@@ -18,11 +18,27 @@ public class TagBuilder {
     }
 
     public void addSibling(String siblingTagName) {
-
+        TagNode parentNode = currentNode.getParent();
+        TagNode siblingNode = new TagNode(siblingTagName);
+        parentNode.add(siblingNode);
+        currentNode = siblingNode;
     }
 
-    public void addTo(TagNode parentNode, String tagName) {
+    public void addToParent(String parentTagName, String childTagName) {
+        TagNode parentNode = findParentNode(parentTagName);
+        TagNode childNode = new TagNode(childTagName);
+        parentNode.add(childNode);
+        currentNode = childNode;
+    }
 
+    private TagNode findParentNode(String parentTagName) {
+        TagNode parentNode = currentNode;
+        while(parentNode != null) {
+            if(parentNode.getTagName().equals(parentTagName))
+                return parentNode;
+            parentNode = parentNode.getParent();
+        }
+        throw new NodeNotFoundedException("Such parent is not founded");
     }
 
     public String toXml() {

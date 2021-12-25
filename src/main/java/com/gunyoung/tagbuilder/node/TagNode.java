@@ -15,6 +15,10 @@ public class TagNode {
         this.attributes = new StringBuffer();
     }
 
+    public String getTagName() {
+        return tagName;
+    }
+
     public String getValue() {
         return value;
     }
