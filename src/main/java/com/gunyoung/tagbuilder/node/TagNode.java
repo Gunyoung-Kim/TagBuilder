@@ -7,12 +7,11 @@ public class TagNode {
     private String tagName = "";
     private String value = "";
     private StringBuffer attributes;
-    private List<TagNode> children;
+    private List<TagNode> children = new ArrayList<>();
 
     public TagNode(String tagName) {
         this.tagName = tagName;
-        this.attributes = new StringBuffer("");
-        this.children = new ArrayList<>();
+        this.attributes = new StringBuffer();
     }
 
     public String getValue() {
