@@ -7,6 +7,7 @@ public class TagNode {
     private String tagName = "";
     private String value = "";
     private StringBuffer attributes;
+    private TagNode parent;
     private List<TagNode> children = new ArrayList<>();
 
     public TagNode(String tagName) {
@@ -22,8 +23,16 @@ public class TagNode {
         return attributes;
     }
 
+    public TagNode getParent() {
+        return parent;
+    }
+
     public List<TagNode> getChildren() {
         return children;
+    }
+
+    public void setParent(TagNode parent) {
+        this.parent = parent;
     }
 
     public void addAttribute(String attribute, String value) {
@@ -37,6 +46,7 @@ public class TagNode {
     public void add(TagNode childNode) {
         if(this == childNode)
             throw new WrongAddException("Can't add self");
+        childNode.setParent(this);
         children.add(childNode);
     }
 

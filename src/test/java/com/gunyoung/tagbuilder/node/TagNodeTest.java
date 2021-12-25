@@ -34,8 +34,8 @@ class TagNodeTest {
     }
 
     @Test
-    @DisplayName("자식 노드 추가 -> 정상")
-    void add_test() {
+    @DisplayName("자식 노드 추가 -> 정상, 부모 노드 관점 확인")
+    void add_test_checkByParent() {
         //Given
         TagNode node = getTestNode("add_test");
         TagNode childNode = getTestNode("childNode");
@@ -45,6 +45,20 @@ class TagNodeTest {
 
         //Then
         assertTrue(node.getChildren().contains(childNode));
+    }
+
+    @Test
+    @DisplayName("자식 노드 추가 -> 정상, 자식 노드 관점 확인")
+    void add_test_checkByChild() {
+        //Given
+        TagNode node = getTestNode("add_test");
+        TagNode childNode = getTestNode("childNode");
+
+        //When
+        node.add(childNode);
+
+        //Then
+        assertEquals(node, childNode.getParent());
     }
 
     @Test
