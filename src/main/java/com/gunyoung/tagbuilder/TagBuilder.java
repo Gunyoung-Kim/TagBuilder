@@ -12,23 +12,17 @@ public class TagBuilder {
     }
 
     public void addChild(String childTagName) {
-        TagNode childNode = new TagNode(childTagName);
-        currentNode.add(childNode);
-        currentNode = childNode;
+        addTo(currentNode, childTagName);
     }
 
     public void addSibling(String siblingTagName) {
         TagNode parentNode = currentNode.getParent();
-        TagNode siblingNode = new TagNode(siblingTagName);
-        parentNode.add(siblingNode);
-        currentNode = siblingNode;
+        addTo(parentNode, siblingTagName);
     }
 
     public void addToParent(String parentTagName, String childTagName) {
         TagNode parentNode = findParentNode(parentTagName);
-        TagNode childNode = new TagNode(childTagName);
-        parentNode.add(childNode);
-        currentNode = childNode;
+        addTo(parentNode, childTagName);
     }
 
     private TagNode findParentNode(String parentTagName) {
@@ -39,6 +33,11 @@ public class TagBuilder {
             parentNode = parentNode.getParent();
         }
         throw new NodeNotFoundedException("Such parent is not founded");
+    }
+
+    private void addTo(TagNode parentNode, String childTagName) {
+        currentNode = new TagNode(childTagName);
+        parentNode.add(currentNode);
     }
 
     public String toXml() {
