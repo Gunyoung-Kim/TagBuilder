@@ -61,10 +61,14 @@ public class TagNode {
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
+        addContentTo(result);
+        return result.toString();
+    }
+
+    private void addContentTo(StringBuilder result) {
         addStartTag(result);
         addElement(result);
         addEndTag(result);
-        return result.toString();
     }
 
     private void addStartTag(StringBuilder sb) {
@@ -76,7 +80,7 @@ public class TagNode {
 
     private void addElement(StringBuilder sb) {
         for(TagNode child: children) {
-            sb.append(child.toString());
+            child.addContentTo(sb);
         }
         sb.append(value);
     }
